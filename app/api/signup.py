@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from flask_restful import Resource, reqparse
+from flask_restful import Resource ,request
 from app import db
 from app.models import User
 
@@ -13,13 +13,13 @@ class signup(Resource):
             "status": 1,
             "message": "成功!"
         }
-        self.parser = reqparse.RequestParser()
 
     def post(self):
-        args = self.parser.parse_args()
-        username = args.get("username")
-        password = args.get("password")
-        email = args.get("email")
+        dict=request.get_json(force=True)
+        username = dict.get("username")
+        password = dict.get("password")
+        email = dict.get("email")
+        print("email={}".format(email))
         if not username or not password or not email:
             return self.fail_msg(msg="输入错误!")
         if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
