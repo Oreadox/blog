@@ -4,7 +4,7 @@ from flask import g
 from flask_restful import Resource, reqparse, request
 from app import db
 from app.models import User
-from app.etc import success_msg, fail_msg
+from app.etc import fail_msg
 
 
 
