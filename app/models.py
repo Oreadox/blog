@@ -5,6 +5,7 @@ from app.config import SECRET_KEY
 from passlib.apps import custom_app_context
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
+from datetime import datetime
 
 
 class User(db.Model):
@@ -50,11 +51,12 @@ class User(db.Model):
 class Article(db.Model):
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.String(255), nullable=False, index=True)
     content = db.Column(db.Text)
     comments = db.relationship("Comment", backref='article')
     can_have_comments = db.Column(db.Boolean, nullable=False, default=True)
+    datetime = db.Column(db.DateTime(), default=datetime.now())
 
     def __init__(self, title, content, author_id):
         self.title = title
@@ -65,9 +67,10 @@ class Article(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
-    content = db.Column(db.Text)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    datetime = db.Column(db.DateTime(), default=datetime.now())
 
     def __init__(self, content, author_id, article_id):
         self.content = content
