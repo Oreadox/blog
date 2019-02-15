@@ -30,7 +30,7 @@ class User(db.Model):
 
     def generate_auth_token(self, expiration=60 * 60 * 24):
         serialize = Serializer(SECRET_KEY, expires_in=expiration)
-        return serialize.dumps({'username': self.username})
+        return serialize.dumps({'id': self.id})
 
     @staticmethod
     def verify_auth_token(token):
@@ -41,11 +41,10 @@ class User(db.Model):
             return None  # token已过期
         except BadSignature:
             return None  # token无效
-
-        username = data['username']
-        return username
-        # user = User.query.get(data['id'])
-        # return user
+        # id = data['id']
+        # return id
+        user = User.query.get(data['id'])
+        return user
 
 
 class Article(db.Model):
@@ -63,6 +62,12 @@ class Article(db.Model):
         self.content = content
         self.author_id = author_id
 
+    def to_json(self):
+        dict = self.__dict__
+        if "_sa_instance_state" in dict:
+            del dict["_sa_instance_state"]
+        return dict
+
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -76,3 +81,9 @@ class Comment(db.Model):
         self.content = content
         self.author_id = author_id
         self.article_id = article_id
+
+    def to_json(self):
+        dict = self.__dict__
+        if "_sa_instance_state" in dict:
+            del dict["_sa_instance_state"]
+        return dict
