@@ -8,7 +8,7 @@ from itsdangerous import SignatureExpired, BadSignature
 
 
 class User(db.Model):
-    __table_name__ = 'users'
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(40), index=True, nullable=False)
     email = db.Column(db.String(40), nullable=False)
@@ -48,7 +48,7 @@ class User(db.Model):
 
 
 class Article(db.Model):
-    __table_name__ = 'articles'
+    __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String(255), nullable=False, index=True)
@@ -63,7 +63,7 @@ class Article(db.Model):
 
 
 class Comment(db.Model):
-    __table_name__ = 'comments'
+    __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
