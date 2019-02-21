@@ -4,7 +4,7 @@ from flask_restful import Resource, request
 from flask import g, jsonify
 from app import db, auth
 from app.models import User, Article
-from app.etc import fail_msg, to_json
+from app.etc import fail_msg, to_dict
 
 
 class get_article(Resource):
@@ -18,9 +18,9 @@ class get_article(Resource):
         if not article:
             return fail_msg(msg="该文章不存在！")
         output = {}
-        output['article'] = to_json(article.__dict__.copy())
+        output['article'] = to_dict(article.__dict__.copy())
         if article.comments:
-            output['comments'] = {to_json(comment.__dict__.copy()) for comment in article.comments}
+            output['comments'] = {to_dict(comment.__dict__.copy()) for comment in article.comments}
         else:
             output['comments'] = {}
         return jsonify(output)
