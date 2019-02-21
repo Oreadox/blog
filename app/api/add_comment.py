@@ -9,7 +9,6 @@ from app.etc import success_msg, fail_msg
 class add_comment(Resource):
     '发布评论'
 
-
     @auth.login_required
     def post(self):
         data = request.get_json(force=True)
