@@ -55,18 +55,12 @@ class Article(db.Model):
     content = db.Column(db.Text)
     comments = db.relationship("Comment", backref='article')
     can_have_comments = db.Column(db.Boolean, nullable=False, default=True)
-    datetime = db.Column(db.DateTime(), default=datetime.now())
+    datetime = db.Column(db.DateTime(), default=datetime.now)
 
     def __init__(self, title, content, author_id):
         self.title = title
         self.content = content
         self.author_id = author_id
-
-    def to_json(self):
-        dict = self.__dict__
-        if "_sa_instance_state" in dict:
-            del dict["_sa_instance_state"]
-        return dict
 
 
 class Comment(db.Model):
@@ -75,15 +69,10 @@ class Comment(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    datetime = db.Column(db.DateTime(), default=datetime.now())
+    datetime = db.Column(db.DateTime(), default=datetime.now)
 
     def __init__(self, content, author_id, article_id):
         self.content = content
         self.author_id = author_id
         self.article_id = article_id
 
-    def to_json(self):
-        dict = self.__dict__
-        if "_sa_instance_state" in dict:
-            del dict["_sa_instance_state"]
-        return dict

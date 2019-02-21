@@ -1,8 +1,9 @@
 # encoding: utf-8
-import os
+# import os
 
 DEBUG = True
-SECRET_KEY = os.urandom(24)
+# SECRET_KEY = os.urandom(24)
+SECRET_KEY = "S83rQ53gC4vdarcIAvY89Ky4"
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'db1'

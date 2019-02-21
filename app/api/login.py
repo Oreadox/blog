@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-from flask import g
 from flask_restful import Resource, reqparse, request
 from app import db
 from app.models import User
@@ -21,8 +20,11 @@ class login(Resource):
         password = dict.get("password")
         if not username or not password:
             return fail_msg(msg="输入错误!")
-        if User.query.filter_by(username=username,password=password).first():
-            token = g.user.generate_auth_token()
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return fail_msg(msg="用户不存在!")
+        if user.verify_password(password=password):
+            token = user.generate_auth_token()
             return ({'token': token.decode('ascii')})
         else:
-            return fail_msg(msg="用户名或密码错误!")
+            return fail_msg(msg="密码错误!")

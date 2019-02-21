@@ -14,7 +14,6 @@ class signup(Resource):
         username = data.get("username")
         password = data.get("password")
         email = data.get("email")
-        print("email={}".format(email))
         if not username or not password or not email:
             return fail_msg(msg="输入错误!")
         if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
